@@ -1,0 +1,22 @@
+services:
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: devel-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_ARBITRARY: 1
+      UPLOAD_LIMIT: 256M
+    # --- AJOUT CRUCIAL ICI ---
+    networks:
+      - gateway
+    # -------------------------
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pma.rule=Host(`pma.localhost`)"
+      - "traefik.http.routers.pma.entrypoints=web"
+      - "traefik.http.services.pma.loadbalancer.server.port=80"
+      - "traefik.docker.network=gateway"
+
+networks:
+  gateway:
+    external: true
