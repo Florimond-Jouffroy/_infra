@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     environment:
       - DOCKER_API_VERSION=1.54
+      - TZ=Europe/Paris
     command:
       - --api.insecure=true
       - --api.dashboard=true
@@ -16,6 +17,8 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro # 🌟 Aligne le proxy sur l'horloge locale
+      - /etc/timezone:/etc/timezone:ro
     networks:
       - gateway
 
